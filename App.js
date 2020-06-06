@@ -1,21 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View, Dimensions, Modal } from 'react-native';
-import MapView from 'react-native-maps';
+import { StyleSheet, Text, View, Dimensions } from 'react-native';
+import { Map, Modal } from './components';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <MapView style={styles.map}/>
-      <Modal
-       animationType='slide'
-       transparent={true}
-       visible={true}>
-      <View style={styles.center}>
-        <View style={styles.modalView}>
-          <Text> 😁 </Text>
-        </View>
-      </View>
-      </Modal>
+      <Map />
+      <Modal />
     </View>
   );
 }
@@ -26,7 +17,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  modalView:{
+  modalView: {
     backgroundColor: '#fff',
     borderRadius: 4,
     padding: 20,
@@ -35,10 +26,6 @@ const styles = StyleSheet.create({
       width: 0,
       height: 3,
     }
-  },
-  map: {
-    height: Dimensions.get('window').height,
-    width: Dimensions.get('window').width,
   },
   container: {
     flex: 1,
