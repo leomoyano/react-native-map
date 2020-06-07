@@ -1,36 +1,30 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { StyleSheet, Text, View, Dimensions } from 'react-native';
-import { Map, Modal } from './components';
+import { Map, Modal, Panel } from './components';
 
 export default function App() {
+
+  const [puntos, setPuntos] = useState([])
+  const handleLongPress = ({nativeEvent}) => {
+    const newPuntos = puntos.concat({coordinate: nativeEvent.coordinate})
+    setPuntos(newPuntos)
+  }
+  console.log(puntos);
+  
   return (
     <View style={styles.container}>
-      <Map />
+      <Map onLongPress={handleLongPress} />
+      <Panel />
       <Modal />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  center: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalView: {
-    backgroundColor: '#fff',
-    borderRadius: 4,
-    padding: 20,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    }
-  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
   },
 });
