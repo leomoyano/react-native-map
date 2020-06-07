@@ -1,28 +1,67 @@
-import React, {useState} from 'react';
-import { StyleSheet, Text, View, Dimensions } from 'react-native';
-import { Map, Modal, Panel } from './components';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, Dimensions, Button } from 'react-native';
+import { Map, Modal, Panel, Input, List } from './components';
 
 export default function App() {
 
   const [puntos, setPuntos] = useState([])
-  const handleLongPress = ({nativeEvent}) => {
-    const newPuntos = puntos.concat({coordinate: nativeEvent.coordinate})
-    setPuntos(newPuntos)
+  const [puntoTemp, setPuntoTemp] = useState({})
+  const [nombre, setNombre] = useState('')
+  const [visibilityFilter, setVisibilityFilter] = useState('new_punto') // New_Punto or All_puntos
+  const [visibility, setVisibility] = useState(false)
+
+  const handleLongPress = ({ nativeEvent }) => {
+    setVisibilityFilter('new_punto')
+    setPuntoTemp(nativeEvent.coordinate)
+    setVisibility(true)
   }
-  console.log(puntos);
-  
+
+  const handleChangeText = text => {
+    setNombre(text)
+  }
+
+  const handleSubmit = () => {
+    const newPunto = { coordinate: puntoTemp, name: nombre };
+    setPuntos(puntos.concat(newPunto))
+    setVisibility(false)
+    setNombre('')
+  }
+
+  const handleLista = () => {
+    setVisibilityFilter('all_puntos')
+    setVisibility(true)
+  }
+
   return (
     <View style={styles.container}>
-      <Map onLongPress={handleLongPress} />
-      <Panel />
-      <Modal />
+      <Map onLongPress={handleLongPress} puntos={puntos}/>
+      <Panel onPressLeft={handleLista} textLeft="List" />
+      <Modal visibility={visibility}>
+        {visibilityFilter == 'new_punto' ?
+          <View style={styles.form}>
+            <Input style={styles.submitInput} title={"Nombre"} placeholder={"Nombre del Punto"} onChangeText={handleChangeText} />
+            <Button style={styles.submitBotton} title={"Aceptar"} onPress={handleSubmit} />
+            </View>
+          :   <List puntos={puntos} closeModal={() => setVisibility(false)} />
+  }
+      </Modal>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  form: {
+    padding: 15,
+    height: 120,
+  },
+  submitInput: {
+    backgroundColor: '#ccc',
+  },
+  submitButton: {
+    
+  },
   container: {
-    flex: 1,
+        flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'flex-start',
