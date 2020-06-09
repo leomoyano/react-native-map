@@ -58,7 +58,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#ccc',
   },
   submitButton: {
-    
   },
   container: {
         flex: 1,
